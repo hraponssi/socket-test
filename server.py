@@ -86,7 +86,7 @@ def handle_client(client_socket, addr):
                 response = "accepted"
             client_socket.send(response.encode("utf-8"))
     except Exception as e:
-        print(f"Error when hanlding client: {e}")
+        print(f"Error when handling client: {e}")
     finally:
         client_socket.close()
         print(f"Connection to client ({addr[0]}:{addr[1]}) closed")
