@@ -60,7 +60,7 @@ def broadcaster():
             message = bytes(data_as_string(), "utf-8")
             broadcast_socket.sendto(message, (multicast_ip, multicast_port))
             print(f"Sent multicast broadcast of {message}")
-            time.sleep(2)
+            time.sleep(4)
     except Exception as e:
         print(f"Broadcast error: {e}")
     finally:
@@ -76,8 +76,14 @@ def handle_client(client_socket, addr):
                 client_socket.send("closed".encode("utf-8"))
                 break
             print(f"Received: {request}")
-            # convert and send accept response to the client
-            response = "accepted"
+            # Handle query command to get specific data point
+            if request.startswith("query "):
+                response = "invalid query"
+                if request.split(" ")[1] in data:
+                    response = str(data[request.split(" ")[1]])
+            else:
+                # convert and send accept response to the client
+                response = "accepted"
             client_socket.send(response.encode("utf-8"))
     except Exception as e:
         print(f"Error when hanlding client: {e}")
